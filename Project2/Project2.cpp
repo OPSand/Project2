@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
-#include"armadillo"
-#include<list>
+#include "armadillo"
+#include <list>
 
 using namespace arma;
 using namespace std; 
@@ -27,4 +27,3 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	return 0;
 }
-
