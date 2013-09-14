@@ -9,7 +9,12 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#include "armadillo"
+#include <time.h>
 
+using namespace std;
+using namespace arma;
 
-
-// TODO: reference additional headers your program requires here
+typedef double num; // for quick switching between double/float as needed
+typedef Mat<num> matr; // typed matrix
+typedef Col<num> vect; // typed (column) vector
