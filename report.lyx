@@ -1,0 +1,170 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip smallskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Project 2, FYS 3150 / 4150, fall 2013
+\end_layout
+
+\begin_layout Author
+Nathalie Bonatout and Odd Petter Sand
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+x
+\end_layout
+
+\begin_layout Standard
+(Author's note: This text, and the text introducing the various exercises,
+ is taken from the project description provided at the course website.)
+\end_layout
+
+\begin_layout Section
+Exercises
+\end_layout
+
+\begin_layout Subsection
+Exercise a)
+\end_layout
+
+\begin_layout Standard
+x
+\end_layout
+
+\begin_layout Subsection
+Exercise b)
+\end_layout
+
+\begin_layout Standard
+x
+\end_layout
+
+\begin_layout Subsection
+Exercise c)
+\end_layout
+
+\begin_layout Standard
+x
+\end_layout
+
+\begin_layout Subsection
+Exercise d)
+\end_layout
+
+\begin_layout Standard
+x
+\end_layout
+
+\begin_layout Subsection
+Exercise e)
+\end_layout
+
+\begin_layout Standard
+x
+\end_layout
+
+\begin_layout Section
+Source code
+\end_layout
+
+\begin_layout Standard
+All our source code can be found at our GitHub repository: 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://github.com/OPSand/Project2"
+target "https://github.com/OPSand/Project2"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+From this project, we have learned the following things:
+\end_layout
+
+\begin_layout Itemize
+x
+\end_layout
+
+\begin_layout Subsection
+Critique
+\end_layout
+
+\begin_layout Standard
+We would like to provide the following items of feedback for future versions
+ of this project:
+\end_layout
+
+\begin_layout Itemize
+x
+\end_layout
+
+\end_body
+\end_document
