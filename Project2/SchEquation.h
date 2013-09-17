@@ -7,7 +7,7 @@ class SchEquation :
 {
 
 public:
-	SchEquation(vec);
+	SchEquation(void);
 	~SchEquation(void);
 };
 

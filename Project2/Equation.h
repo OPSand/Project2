@@ -1,9 +1,14 @@
 #pragma once
+using namespace std;
+
 class Equation abstract
 {
 
+protected:
+	string _type;
+
 public:
-	Equation(vec);
 	Equation(void);
 	~Equation(void);
+	string type(void);
 };

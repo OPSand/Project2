@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 
+#include "Solver.h"
+
 using namespace arma;
 using namespace std; 
 
@@ -17,7 +19,16 @@ int _tmain(int argc, _TCHAR* argv[])
 	const bool MAKE_PLOTS = false; // ex. d)
 	// const bool INCLUDE_LANCZOS = false; // ex. e), voluntary
 
-	armaTest(); // debug
+	// --- begin debug ---
+
+	armaTest();
+
+	JacobiSolver js = JacobiSolver(1, false);
+	SchEquation seq = SchEquation();
+	js.Add(&seq, 0);
+	js.SolveAll();
+
+	// --- end debug ---
 
 	// create SchEquation objects - with or without interaction
 

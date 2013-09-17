@@ -11,3 +11,14 @@ JacobiSolver::~JacobiSolver(void)
 {
 }
 
+void JacobiSolver::Solve(Equation* eq)
+{
+	if( eq->type() == "SchEquation" )
+	{
+		cout << "I can solve this! :D";
+	}
+	else 
+	{
+		cout << "I cannot solve this... :(";
+	}
+}

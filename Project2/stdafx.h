@@ -12,9 +12,11 @@
 #include "armadillo"
 #include <time.h>
 
+#include "Solver.h"
+#include "JacobiSolver.h"
+#include "ArmaSolver.h"
+#include "Equation.h"
+#include "SchEquation.h"
+
 using namespace std;
 using namespace arma;
-
-typedef double num; // for quick switching between double/float as needed
-typedef Mat<num> matr; // typed matrix
-typedef Col<num> vect; // typed (column) vector

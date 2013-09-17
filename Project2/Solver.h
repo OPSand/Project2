@@ -16,6 +16,8 @@ public:
 	~Solver(void);
 	void SolveAll();
 	virtual void Solve(Equation*) abstract;
-	inline num elapsedTime(void);
+	inline double elapsedTime(void);
+	inline void startClock(void);
+	inline void stopClock(void);
+	bool Add(Equation*, int);
 };
-

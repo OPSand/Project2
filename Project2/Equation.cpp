@@ -1,11 +1,6 @@
 #include "stdafx.h"
 #include "Equation.h"
 
-Equation::Equation(vec parameters)
-{
-	// empty
-}
-
 Equation::Equation(void)
 {
 	// empty
@@ -14,4 +9,9 @@ Equation::Equation(void)
 Equation::~Equation(void)
 {
 	// empty
+}
+
+string Equation::type(void)
+{
+	return _type;
 }

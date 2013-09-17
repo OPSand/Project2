@@ -25,7 +25,33 @@ void Solver::SolveAll()
 }
 
 // return the time used to solve
-inline num Solver::elapsedTime(void)
+inline double Solver::elapsedTime(void)
 {
-	return ((num)(_finish - _start))/((num)CLOCKS_PER_SEC);
+	return ((double)(_finish - _start))/((double)CLOCKS_PER_SEC);
+}
+
+// start timer
+inline void Solver::startClock(void)
+{
+	_start = clock();
+}
+
+// stop timer
+inline void Solver::stopClock(void)
+{
+	_finish = clock();
+}
+
+// add equation at a certain index (returns false if index out of bounds
+bool Solver::Add(Equation* eq, int i)
+{
+	if( (i < 0) || (i >= _equationCount) )
+	{
+		return false;
+	}
+	else
+	{
+		_equations[i] = eq;
+		return true;
+	}
 }
