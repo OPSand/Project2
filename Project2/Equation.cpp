@@ -3,15 +3,15 @@
 
 Equation::Equation(vec parameters)
 {
-	_parameters = parameters;
+	// empty
 }
 
 Equation::Equation(void)
 {
-	Equation(vec());
+	// empty
 }
 
 Equation::~Equation(void)
 {
-	delete &_parameters;
+	// empty
 }

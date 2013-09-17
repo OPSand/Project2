@@ -1,12 +1,9 @@
 #pragma once
-class Equation
+class Equation abstract
 {
-protected:
-	vec _parameters;
 
 public:
 	Equation(vec);
 	Equation(void);
 	~Equation(void);
 };
-
