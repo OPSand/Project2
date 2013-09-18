@@ -2,9 +2,9 @@
 #include "Solver.h"
 
 // constructor
-Solver::Solver(int equationCount, bool useTimers)
+Solver::Solver(Equation** equations, int equationCount, bool useTimers)
 {
-	_equations = new Equation*[equationCount];
+	_equations = equations;
 	_equationCount = equationCount;
 	_useTimers = useTimers;
 }
@@ -40,18 +40,4 @@ inline void Solver::startClock(void)
 inline void Solver::stopClock(void)
 {
 	_finish = clock();
-}
-
-// add equation at a certain index (returns false if index out of bounds
-bool Solver::Add(Equation* eq, int i)
-{
-	if( (i < 0) || (i >= _equationCount) )
-	{
-		return false;
-	}
-	else
-	{
-		_equations[i] = eq;
-		return true;
-	}
 }

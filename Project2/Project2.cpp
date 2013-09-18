@@ -19,29 +19,29 @@ int _tmain(int argc, _TCHAR* argv[])
 	const bool MAKE_PLOTS = false; // ex. d)
 	// const bool INCLUDE_LANCZOS = false; // ex. e), voluntary
 
-	// --- begin debug ---
+	armaTest(); // debug
 
-	armaTest();
-
-	JacobiSolver js = JacobiSolver(1, false);
-	SchEquation seq = SchEquation();
-	js.Add(&seq, 0);
-	js.SolveAll();
-
-	// --- end debug ---
-
-	// create SchEquation objects - with or without interaction
-
+	// initiate Equation objects - with or without interaction
+	// parameters (numbers) will need to be added to the class and constructor
+	const int NUMBER_OF_EQUATIONS = 2;
+	Equation** eqs = new Equation*[NUMBER_OF_EQUATIONS];
+	for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
+	{
+		eqs[i] = &SchEquation(); // no parameters yet, but soon...
+	}
+	
 	if( INCLUDE_JACOBI )
 	{
-		// create and add JacobiSolver
+		// create JacobiSolver and add equations to it
+		JacobiSolver js = JacobiSolver(eqs, NUMBER_OF_EQUATIONS, INCLUDE_TIMERS);
 
 		// solve the equations
+		js.SolveAll(); // NOTE: Causes assertion fault while debugging. Not fatal, but should be looked into.
 	}
 
 	if( INCLUDE_ARMADILLO )
 	{
-		// create and add ArmaSolver
+		// create ArmaSolver and add equations to it
 
 		// solve the equations
 	}

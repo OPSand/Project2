@@ -5,19 +5,19 @@
 class Solver abstract
 {
 private:
-	Equation** _equations; // not a matrix, but an array of pointers (since the class is abstract)
 	int _equationCount;
 	bool _useTimers;
 	clock_t _start;
 	clock_t _finish;
+	Equation** _equations; // not a matrix, but an array of pointers (since the class is abstract)
 
 public:
-	Solver(int, bool);
+	Solver(Equation**, int, bool);
 	~Solver(void);
 	void SolveAll();
 	virtual void Solve(Equation*) abstract;
 	inline double elapsedTime(void);
 	inline void startClock(void);
 	inline void stopClock(void);
-	bool Add(Equation*, int);
+	// TODO: method to print solution to file
 };

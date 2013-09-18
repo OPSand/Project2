@@ -4,7 +4,10 @@ class ArmaSolver :
 	public Solver
 {
 public:
-	ArmaSolver(int, bool);
+	// constructors and destructors
+	ArmaSolver(Equation**, int, bool);
 	~ArmaSolver(void);
+
+	// TODO: Implement Solve()
 };
 

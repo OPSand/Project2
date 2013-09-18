@@ -2,7 +2,7 @@
 #include "JacobiSolver.h"
 
 
-JacobiSolver::JacobiSolver(int equationCount, bool useTimers):Solver(equationCount, useTimers)
+JacobiSolver::JacobiSolver(Equation** equations, int equationCount, bool useTimers):Solver(equations, equationCount, useTimers)
 {
 }
 
@@ -15,10 +15,12 @@ void JacobiSolver::Solve(Equation* eq)
 {
 	if( eq->type() == "SchEquation" )
 	{
-		cout << "I can solve this! :D";
+		// The code to implement Jacobi's method goes here
+
+		cout << "I can solve this! :D"; // debug
 	}
 	else 
 	{
-		cout << "I cannot solve this... :(";
+		cout << "I cannot solve this... :("; // debug
 	}
 }

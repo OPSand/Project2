@@ -5,7 +5,7 @@ class JacobiSolver :
 	public Solver
 {
 public:
-	JacobiSolver(int, bool);
+	JacobiSolver(Equation**, int, bool);
 	~JacobiSolver(void);
 	void Solve(Equation*);
 };

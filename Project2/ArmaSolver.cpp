@@ -2,7 +2,7 @@
 #include "ArmaSolver.h"
 
 
-ArmaSolver::ArmaSolver(int equationCount, bool useTimers):Solver(equationCount, useTimers)
+ArmaSolver::ArmaSolver(Equation** equations, int equationCount, bool useTimers):Solver(equations, equationCount, useTimers)
 {
 }
 
@@ -10,3 +10,5 @@ ArmaSolver::ArmaSolver(int equationCount, bool useTimers):Solver(equationCount, 
 ArmaSolver::~ArmaSolver(void)
 {
 }
+
+// TODO: Implement Solve()
