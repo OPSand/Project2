@@ -19,7 +19,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	const bool MAKE_PLOTS = false; // ex. d)
 	// const bool INCLUDE_LANCZOS = false; // ex. e), voluntary
 
-	armaTest(); // debug
+	//armaTest(); // debug
 
 	// initiate Equation objects - with or without interaction
 	// parameters (numbers) will need to be added to the class and constructor
@@ -27,7 +27,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	Equation** eqs = new Equation*[NUMBER_OF_EQUATIONS];
 	for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
 	{
-		eqs[i] = &SchEquation(); // no parameters yet, but soon...
+		eqs[i] = new SchEquation(); // no parameters yet, but soon...
+		//N: (I think that your weird degug assertion is now solved -unless I didn't get what you wanted to do -but answer just when you hav time:
+		//why did you use 
+		//"eqs[i] = &SchEquation();" ? 
+		//What does the "&" stand here for? Seems to work fine with:
+		//"eqs[i] = new SchEquation();")
 	}
 	
 	if( INCLUDE_JACOBI )
