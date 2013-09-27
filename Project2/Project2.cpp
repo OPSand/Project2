@@ -24,8 +24,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	// initiate Equation objects - with or without interaction
 	// parameters (numbers) will need to be added to the class and constructor
 	const int NUMBER_OF_EQUATIONS = 2;
-	SchEquation* eqs = new SchEquation[NUMBER_OF_EQUATIONS];
-	for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
+	//SchEquation* eqs = new SchEquation[NUMBER_OF_EQUATIONS];// Do we want/need a table here ? Not really ?
+	double omega = 1;
+	double rhoMax = 5;
+	int nSteps = 10;
+	
+	SchEquation* eqs = new SchEquation(omega,rhoMax,nSteps,false);
+	/*for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
 	{
 		double omega = 1;
 		double rhoMax = 5;
@@ -37,7 +42,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		//"eqs[i] = &SchEquation();" ? 
 		//What does the "&" stand here for? Seems to work fine with:
 		//"eqs[i] = new SchEquation();")
-	}
+	}*/
 	
 	if( INCLUDE_JACOBI )
 	{

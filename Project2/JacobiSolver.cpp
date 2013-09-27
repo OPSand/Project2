@@ -2,7 +2,7 @@
 #include "JacobiSolver.h"
 
 
-JacobiSolver::JacobiSolver(Equation** equations, int equationCount, bool useTimers):Solver(equations, equationCount, useTimers)
+JacobiSolver::JacobiSolver(SchEquation* equations, int equationCount, bool useTimers):Solver(equations, equationCount, useTimers)
 {
 	// remember: Solver constructor is called first
 
@@ -14,23 +14,24 @@ JacobiSolver::~JacobiSolver(void)
 {
 }
 
-void JacobiSolver::Solve(Equation* eq)
+void JacobiSolver::Solve(SchEquation eq)
 {
-	if( eq->type() == "SchEquation" ) 
+	if(eq.type() == "SchEquation" ) 
 	{
+		int nbIterations = 0;
 		// The code to implement Jacobi's method goes here
 		// First, we should "transform" our equation into a matrix, then look for 
 		// The biggest non diag. element. Then check if bigger than the tolerance, and ! Hop!
 		// How do we describe the eigenvectors ?
 		int nbSteps = 0;
-		int nbIterations = 0;
-		printf("How many steps? \t");
+		printf("Beginning A ! \t");
+		/*printf("How many steps? \t");
 		cin >> nbSteps;
 		double h = (1.0/(((double)nbSteps) - 1.0)); // This is our step length
-		double x = 0.0f;
-		mat A = mat(nbSteps,nbSteps);
+		double x = 0.0f;*/
+		mat A = eq.A();
 		// We have initialize our matrix  .
-		A.zeros();
+		/*A.zeros();
 		for (int i= 0; i < nbSteps; i++)
 		{
 			x = i*h;
@@ -39,7 +40,7 @@ void JacobiSolver::Solve(Equation* eq)
 				A(i,i-1)= -1/pow(h,2);
 			if (i < (nbSteps-1))
 				A(i,i+1) = -1/pow(h,2);
-		}
+		}*/
 
 		// And then, launch the Jacobi rotation
 		int rowLargest = 0;
@@ -54,9 +55,9 @@ void JacobiSolver::Solve(Equation* eq)
 		}
 		// Then we have finish our Jacobi's process
 		// And we need to print the result ...
-		for (int i=0; i < B.n_rows; i++)
+		for (unsigned int i=0; i < B.n_rows; i++) // Unsigned to prevent a warning to be fire.
 		{
-			for (int j=0; j< B.n_rows; j++)
+			for (unsigned int j=0; j< B.n_rows; j++)
 				printf(" %f \t", B(i,j));
 			printf("\n");
 		}

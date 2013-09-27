@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Equation.h"
+#include "SchEquation.h"
 
 class Solver abstract
 {

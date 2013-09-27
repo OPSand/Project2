@@ -13,20 +13,20 @@ Solver::Solver(SchEquation* equations, int equationCount, bool useTimers)
 Solver::~Solver(void)
 {
 	
-	// I had to transform the "NUMBER_OF_EQUATIONS" variables into a global one, defined in 
-	// the stdafx header ~
-	for (int i= 0; i< _equationCount; i++)
-		delete _equations[i];
-	delete [] _equations;
+	// Still getting the weird debug assertion.
+	delete _equations;
 }
 
 // solve ALL the equations :O
 void Solver::SolveAll()
 {
-	for( int i = 0; i < _equationCount; i++ )
+	/*for( int i = 0; i < _equationCount; i++ )
 	{
+		// N: This is not working, since we're not wirking with table anymore !
 		Solve(_equations[i]); // abstract function to be defined in subclasses
-	}
+		//Solve(_equations);
+	}*/
+	Solve(_equations[0]);
 }
 
 // return the time used to solve
