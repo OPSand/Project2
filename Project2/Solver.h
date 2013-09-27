@@ -9,10 +9,10 @@ private:
 	bool _useTimers;
 	clock_t _start;
 	clock_t _finish;
-	Equation** _equations; // not a matrix, but an array of pointers (since the class is abstract)
+	SchEquation* _equations; // not a matrix, but an array of pointers (since the class is abstract)
 
 public:
-	Solver(Equation**, int, bool);
+	Solver(SchEquation*, int, bool);
 	~Solver(void);
 	void SolveAll();
 	inline double elapsedTime(void);
@@ -20,5 +20,5 @@ public:
 	inline void stopClock(void);
 	
 	// abstract methods
-	virtual void Solve(Equation*) abstract;
+	virtual void Solve(SchEquation) abstract;
 };

@@ -2,7 +2,7 @@
 #include "Solver.h"
 
 // constructor
-Solver::Solver(Equation** equations, int equationCount, bool useTimers)
+Solver::Solver(SchEquation* equations, int equationCount, bool useTimers)
 {
 	_equations = equations;
 	_equationCount = equationCount;

@@ -11,21 +11,38 @@ protected:
 	static const double HM2;
 	
 	// all input parameters go here
-	rowvec _rho;
 	double _omega;
 	bool _coulomb; // whether Coulomb forces enter into the potential or not
+	double _rhoMax;
+	int _nSteps;
+
+	// intermediate and helper data
+	vec _rho;
+	double _stepSize;
+	mat _A;
+
+	// solutions
+	mat _eigVec; // eigenvectors (for plotting)
+	rowvec _eigVal; // eigenvalues
+
+	// protected methods
+	double V(int);
+	inline double diagElem(int);
+	inline double nonDiagElem(void);
+	vec diag(void);
+	vec nonDiag(void);
 
 public:
 	// constructors and destructors
-	SchEquation(rowvec, double, bool);
+	SchEquation(double omega, double rhoMax, int nSteps, bool coulomb);
 	~SchEquation(void);
 
-	// ...
-	void SaveSolution(string);
+	// other methods
+	void SetSolutions(rowvec, mat);
+	void SaveSolutions(string path);
 
 	// methods that expose parameters to the Solver classes go here
-	double V(int);
-	inline double diag(int);
-	inline double nonDiag();
+	inline int nSteps(void);
+	mat A(void);
 };
 

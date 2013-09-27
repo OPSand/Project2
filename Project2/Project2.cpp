@@ -24,14 +24,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	// initiate Equation objects - with or without interaction
 	// parameters (numbers) will need to be added to the class and constructor
 	const int NUMBER_OF_EQUATIONS = 2;
-	Equation** eqs = new Equation*[NUMBER_OF_EQUATIONS];
+	SchEquation* eqs = new SchEquation[NUMBER_OF_EQUATIONS];
 	for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
 	{
-		rowvec rho(5);
-		rho.fill(1);
 		double omega = 1;
+		double rhoMax = 5;
+		double nSteps = 10;
 
-		eqs[i] = new SchEquation(rho, omega, false); // no parameters yet, but soon...
+		eqs[i] = new SchEquation(omega, rhoMax, nSteps, false); // no parameters yet, but soon...
 		//N: (I think that your weird degug assertion is now solved -unless I didn't get what you wanted to do -but answer just when you hav time:
 		//why did you use 
 		//"eqs[i] = &SchEquation();" ? 

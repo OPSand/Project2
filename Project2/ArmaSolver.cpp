@@ -2,8 +2,11 @@
 #include "ArmaSolver.h"
 
 
-ArmaSolver::ArmaSolver(Equation** equations, int equationCount, bool useTimers):Solver(equations, equationCount, useTimers)
+ArmaSolver::ArmaSolver(SchEquation* equations, int equationCount, bool useTimers):Solver(equations, equationCount, useTimers)
 {
+	// remember: Solver constructor is called first
+
+
 }
 
 
@@ -11,11 +14,7 @@ ArmaSolver::~ArmaSolver(void)
 {
 }
 
-void ArmaSolver::Solve(Equation* eq)
+void ArmaSolver::Solve(SchEquation eq)
 {
-	if( eq->type() == "SchEquation" )
-	{
-		// yay
-	}
-	// else do nothing
+	//
 }

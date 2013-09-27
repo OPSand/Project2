@@ -14,5 +14,5 @@ public:
 	string type(void);
 
 	// abstract methods
-	virtual void SaveSolution(string) abstract;
+	virtual void SaveSolutions(string) abstract;
 };

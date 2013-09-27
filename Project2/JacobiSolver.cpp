@@ -4,6 +4,8 @@
 
 JacobiSolver::JacobiSolver(Equation** equations, int equationCount, bool useTimers):Solver(equations, equationCount, useTimers)
 {
+	// remember: Solver constructor is called first
+
 	d_tolerance = 0.00000001;
 }
 
