@@ -45,7 +45,7 @@ void SchEquation::SaveSolutions(string path)
 {
 	mat plot = mat(_nSteps, 2);
 	plot.col(0) = _rho; // x
-	plot.col(1) = _eigVec; // y
+	plot.col(1) = _eigVec.diag(); // y
 	plot.save(path, raw_ascii);
 }
 

@@ -16,7 +16,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	const bool INCLUDE_JACOBI = true; // ex. b)
 	const bool INCLUDE_ARMADILLO = true; // ex. b)
 	const bool INCLUDE_TIMERS = true; // ex. b)
-	const bool MAKE_PLOTS = false; // ex. d)
+	const bool MAKE_PLOTS = true; // ex. d)
 	// const bool INCLUDE_LANCZOS = false; // ex. e), voluntary
 
 	//armaTest(); // debug
@@ -29,7 +29,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	double rhoMax = 5;
 	int nSteps = 10;
 	
-	SchEquation* eqs = new SchEquation(omega,rhoMax,nSteps,false);
+	SchEquation* eq = new SchEquation(omega,rhoMax,nSteps,false);
 	/*for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
 	{
 		double omega = 1;
@@ -47,10 +47,21 @@ int _tmain(int argc, _TCHAR* argv[])
 	if( INCLUDE_JACOBI )
 	{
 		// create JacobiSolver and add equations to it
-		JacobiSolver js = JacobiSolver(eqs, NUMBER_OF_EQUATIONS, INCLUDE_TIMERS);
+		JacobiSolver js = JacobiSolver(eq, NUMBER_OF_EQUATIONS, INCLUDE_TIMERS);
 
 		// solve the equations
 		js.SolveAll(); // NOTE: Causes assertion fault while debugging. Not fatal, but should be looked into.
+
+		if (MAKE_PLOTS)
+		{
+			// debug
+			rowvec rv = randu<rowvec>(nSteps);
+			mat m = randu<mat>(nSteps, nSteps);
+
+			// plot things (the SchEquation class will be able to write its solutions to file)
+			eq->SetSolutions(rv, m);
+			eq->SaveSolutions("test.txt");
+		}
 	}
 
 	if( INCLUDE_ARMADILLO )
@@ -58,11 +69,11 @@ int _tmain(int argc, _TCHAR* argv[])
 		// create ArmaSolver and add equations to it
 
 		// solve the equations
-	}
 
-	if (MAKE_PLOTS)
-	{
-		// plot things (the Solver class will be able to write its solutions to file)
+		if (MAKE_PLOTS)
+		{
+			// plot things (the SchEquation class will be able to write its solutions to file)
+		}
 	}
 
 	cout << endl << endl << "Press ENTER to exit..." << endl;
