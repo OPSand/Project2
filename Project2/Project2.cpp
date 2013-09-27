@@ -14,7 +14,7 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	// Program flow control flags (set at compile time)
 	const bool INCLUDE_JACOBI = true; // ex. b)
-	const bool INCLUDE_ARMADILLO = true; // ex. b)
+	const bool INCLUDE_ARMADILLO = false; // ex. b)
 	const bool INCLUDE_TIMERS = true; // ex. b)
 	const bool MAKE_PLOTS = true; // ex. d)
 	// const bool INCLUDE_LANCZOS = false; // ex. e), voluntary
@@ -67,12 +67,15 @@ int _tmain(int argc, _TCHAR* argv[])
 	if( INCLUDE_ARMADILLO )
 	{
 		// create ArmaSolver and add equations to it
+		ArmaSolver as = ArmaSolver(eq, NUMBER_OF_EQUATIONS, INCLUDE_TIMERS);
 
 		// solve the equations
+		as.Solve(*eq);
 
 		if (MAKE_PLOTS)
 		{
 			// plot things (the SchEquation class will be able to write its solutions to file)
+			eq->SaveSolutions("test2.txt");
 		}
 	}
 
