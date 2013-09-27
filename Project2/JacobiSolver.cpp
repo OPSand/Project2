@@ -19,7 +19,7 @@ void JacobiSolver::Solve(Equation* eq)
 		// The code to implement Jacobi's method goes here
 		// First, we should "transform" our equation into a matrix, then look for 
 		// The biggest non diag. element. Then check if bigger than the tolerance, and ! Hop!
-		// How to we describe the eigenvectors ?
+		// How do we describe the eigenvectors ?
 		int nbSteps = 0;
 		int nbIterations = 0;
 		printf("How many steps? \t");
@@ -27,16 +27,16 @@ void JacobiSolver::Solve(Equation* eq)
 		double h = (1.0/(((double)nbSteps) - 1.0)); // This is our step length
 		double x = 0.0f;
 		mat A = mat(nbSteps,nbSteps);
-		// We have initialize our matrix  ...
+		// We have initialize our matrix  .
+		A.zeros();
 		for (int i= 0; i < nbSteps; i++)
 		{
+			x = i*h;
 			A(i,i) = 2/pow(h,2) + pow(x,2);
 			if (i >= 1)
-			{
 				A(i,i-1)= -1/pow(h,2);
-				A(i-1,i) = -1/pow(h,2);
-			}
-			x = i*h;
+			if (i < (nbSteps-1))
+				A(i,i+1) = -1/pow(h,2);
 		}
 
 		// And then, launch the Jacobi rotation
@@ -44,17 +44,23 @@ void JacobiSolver::Solve(Equation* eq)
 		int columnLargest = 0;
 		mat B = mat(nbSteps,nbSteps);
 		B.eye();
-		while (isBiggerThanTolerance(offDiag(A,rowLargest,columnLargest))) // While the biggest element is bigger than the tolerance threshold
+		while (isBiggerThanTolerance(offDiag(A,&rowLargest,&columnLargest))) // While the biggest element is bigger than the tolerance threshold
 		{
 			// Then similarity transfo.
 			JacobiRotation(A,rowLargest,columnLargest,B);
 			nbIterations ++;
 		}
 		// Then we have finish our Jacobi's process
+		// And we need to print the result ...
+		for (int i=0; i < B.n_rows; i++)
+		{
+			for (int j=0; j< B.n_rows; j++)
+				printf(" %f \t", B(i,j));
+			printf("\n");
+		}
 
 
-
-		cout << "I solved this! :D"; // debug
+		cout << "I solved this! :D" << endl; // debug
 		printf("And it took me : %d similarity transformations\n", nbIterations);
 	}
 	else 
@@ -64,7 +70,7 @@ void JacobiSolver::Solve(Equation* eq)
 }
 
 /* This function finds the largest non diagonal element of a matrix */
-double JacobiSolver::offDiag(mat A, int row, int column)
+double JacobiSolver::offDiag(mat &A, int* row, int* column)
 {
 	double dLargest = 0.0;
 	bool bIsLargerThanTolerance = true;
@@ -73,11 +79,11 @@ double JacobiSolver::offDiag(mat A, int row, int column)
 	{
 		for (int j = 0; j < sizeMatrix ; j++)
 		{
-			if (abs(A(i,j)) > dLargest) // Guess we should take the absolute value 
+			if ((abs(A(i,j)) >= dLargest) && (i != j)) // Guess we should take the absolute value 
 			{
 				dLargest = abs(A(i,j));
-				row = i;
-				column = j;
+				*row = i;
+				*column = j;
 			}
 		}
 	}
@@ -95,7 +101,7 @@ inline bool JacobiSolver::isBiggerThanTolerance(double valueToTest)
 }
 
 /* This function will process the whole similarity transformation process */
-void JacobiSolver::JacobiRotation(mat A, int rowLargest,int columnLargest,mat B)
+void JacobiSolver::JacobiRotation(mat &A, int rowLargest,int columnLargest,mat &B)
 {
 	int sizeMatrix = A.n_rows;
 	// First, we have to compute tau: (all - akk)/2akl
@@ -119,7 +125,7 @@ void JacobiSolver::JacobiRotation(mat A, int rowLargest,int columnLargest,mat B)
 	// Then, we modify the A matrix:
 	for (int i = 0; i< sizeMatrix; i++)
 	{
-		// But first, we have to store our important values, before erasing them
+		// But first, we have to store our rotation values, before erasing them
 		double ik = A(i,rowLargest);
 		double il = A(i,columnLargest);
 		double kk = A(rowLargest,rowLargest);

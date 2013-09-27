@@ -13,8 +13,8 @@ public:
 	JacobiSolver(Equation**, int, bool);
 	~JacobiSolver(void);
 	void Solve(Equation*);
-	double offDiag(mat A, int row, int column);
+	double offDiag(mat &A, int* row, int* column);
 	inline bool isBiggerThanTolerance(double valueToTest);
-	void JacobiRotation(mat A, int rowLargest,int columnLargest,mat B);
+	void JacobiRotation(mat &A, int rowLargest,int columnLargest,mat &B);
 };
 
