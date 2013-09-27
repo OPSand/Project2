@@ -20,3 +20,5 @@
 
 using namespace std;
 using namespace arma;
+
+const int NUMBER_OF_EQUATIONS = 2;

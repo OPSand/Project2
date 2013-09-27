@@ -12,7 +12,12 @@ Solver::Solver(Equation** equations, int equationCount, bool useTimers)
 // destructor
 Solver::~Solver(void)
 {
-	delete &_equations;
+	
+	// I had to transform the "NUMBER_OF_EQUATIONS" variables into a global one, defined in 
+	// the stdafx header ~
+	for (int i= 0; i< NUMBER_OF_EQUATIONS; i++)
+		delete _equations[i];
+	delete [] _equations;
 }
 
 // solve ALL the equations :O
