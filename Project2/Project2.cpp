@@ -27,7 +27,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	Equation** eqs = new Equation*[NUMBER_OF_EQUATIONS];
 	for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
 	{
-		eqs[i] = new SchEquation(); // no parameters yet, but soon...
+		rowvec rho(5);
+		rho.fill(1);
+		double omega = 1;
+
+		eqs[i] = new SchEquation(rho, omega, false); // no parameters yet, but soon...
 		//N: (I think that your weird degug assertion is now solved -unless I didn't get what you wanted to do -but answer just when you hav time:
 		//why did you use 
 		//"eqs[i] = &SchEquation();" ? 

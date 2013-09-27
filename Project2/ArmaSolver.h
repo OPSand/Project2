@@ -7,7 +7,6 @@ public:
 	// constructors and destructors
 	ArmaSolver(Equation**, int, bool);
 	~ArmaSolver(void);
-
-	// TODO: Implement Solve()
+	void Solve(Equation*);
 };
 

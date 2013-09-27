@@ -11,4 +11,11 @@ ArmaSolver::~ArmaSolver(void)
 {
 }
 
-// TODO: Implement Solve()
+void ArmaSolver::Solve(Equation* eq)
+{
+	if( eq->type() == "SchEquation" )
+	{
+		// yay
+	}
+	// else do nothing
+}

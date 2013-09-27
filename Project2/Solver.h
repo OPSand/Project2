@@ -15,9 +15,10 @@ public:
 	Solver(Equation**, int, bool);
 	~Solver(void);
 	void SolveAll();
-	virtual void Solve(Equation*) abstract;
 	inline double elapsedTime(void);
 	inline void startClock(void);
 	inline void stopClock(void);
-	// TODO: method to print solution to file
+	
+	// abstract methods
+	virtual void Solve(Equation*) abstract;
 };
