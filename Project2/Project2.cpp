@@ -23,7 +23,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// initiate Equation objects - with or without interaction
 	// parameters (numbers) will need to be added to the class and constructor
-	//const int NUMBER_OF_EQUATIONS = 2;
+	const int NUMBER_OF_EQUATIONS = 2;
 	Equation** eqs = new Equation*[NUMBER_OF_EQUATIONS];
 	for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
 	{
