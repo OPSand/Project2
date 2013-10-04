@@ -63,16 +63,16 @@ double SchEquation::V(int i)
 }
 
 // return diagonal matrix element (@ row i)
-inline double SchEquation::diagElem(int i)
+/*inline double SchEquation::diagElem(int i)
 {
 	return 2 * HM2 + V(i);
-}
+}*/
 
 // return nondiagonal matrix element
-inline double SchEquation::nonDiagElem()
+/*inline double SchEquation::nonDiagElem()
 {
 	return -HM2;
-}
+}*/
 
 // return diagonal as column vector
 vec SchEquation::diag()
@@ -97,18 +97,37 @@ vec SchEquation::nonDiag()
 	return nd;
 }
 
+mat SchEquation::InitMat()
+{
+	// We have some operations to do here:
+	_A = mat(_nSteps,_nSteps); // First, set the size
+	_A.zeros(); // Fill it with zeros
+	for (int i= 0; i < _nSteps; i++)
+	{
+		_A(i,i) = diagElem(i);
+		if (i >= 1)
+			_A(i,i-1)= nonDiagElem();
+		if (i < (_nSteps-1))
+			_A(i,i+1) = nonDiagElem();
+	}
+
+	return _A;
+}
+
 // provides the Solver with a matrix to work with
+//  But first, we have to initialize the matrix !
 mat SchEquation::A()
 {
+	_A = InitMat();
 	return _A;
 }
 
 // return number of steps
-inline int SchEquation::nSteps()
+/*inline int SchEquation::nSteps()
 {
 	return _nSteps;
 }
-
+*/
 // set the solutions (for use by the Solver classes)
 void SchEquation::SetSolutions(rowvec eigVal, mat eigVec)
 {

@@ -27,8 +27,15 @@ protected:
 
 	// protected methods
 	double V(int);
-	inline double diagElem(int);
-	inline double nonDiagElem(void);
+	inline double diagElem(int i)
+	{
+		return 2 * HM2 + V(i);
+	};
+	inline double nonDiagElem(void)
+	{
+		return -HM2;
+	};
+	mat SchEquation::InitMat();
 	vec diag(void);
 	vec nonDiag(void);
 
@@ -42,7 +49,8 @@ public:
 	void SaveSolutions(string path);
 
 	// methods that expose parameters to the Solver classes go here
-	inline int nSteps(void);
+	inline int nSteps(void)
+	{return _nSteps;};
 	mat A(void);
 };
 

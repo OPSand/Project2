@@ -6,7 +6,7 @@ JacobiSolver::JacobiSolver(SchEquation* equations, int equationCount, bool useTi
 {
 	// remember: Solver constructor is called first
 
-	d_tolerance = 0.00000001;
+	d_tolerance = 0.01;
 }
 
 
@@ -23,13 +23,19 @@ void JacobiSolver::Solve(SchEquation eq)
 		// First, we should "transform" our equation into a matrix, then look for 
 		// The biggest non diag. element. Then check if bigger than the tolerance, and ! Hop!
 		// How do we describe the eigenvectors ?
-		int nbSteps = 0;
+		int nbSteps = eq.nSteps();
 		printf("Beginning A ! \t");
 		/*printf("How many steps? \t");
 		cin >> nbSteps;
 		double h = (1.0/(((double)nbSteps) - 1.0)); // This is our step length
 		double x = 0.0f;*/
 		mat A = eq.A();
+		for (unsigned int i=0; i < A.n_rows; i++) // Unsigned to prevent a warning to be fire.
+		{
+			for (unsigned int j=0; j< A.n_rows; j++)
+				printf(" %f \t", A(i,j));
+			printf("\n");
+		}
 		// We have initialize our matrix  .
 		/*A.zeros();
 		for (int i= 0; i < nbSteps; i++)
@@ -62,6 +68,14 @@ void JacobiSolver::Solve(SchEquation eq)
 			printf("\n");
 		}
 
+		printf ("And this is A ! \n");
+		for (unsigned int i=0; i < A.n_rows; i++) // Unsigned to prevent a warning to be fire.
+		{
+			for (unsigned int j=0; j< A.n_rows; j++)
+				printf(" %f \t", A(i,j));
+			printf("\n");
+		}
+
 
 		cout << "I solved this! :D" << endl; // debug
 		printf("And it took me : %d similarity transformations\n", nbIterations);
@@ -82,7 +96,7 @@ double JacobiSolver::offDiag(mat &A, int* row, int* column)
 	{
 		for (int j = 0; j < sizeMatrix ; j++)
 		{
-			if ((abs(A(i,j)) >= dLargest) && (i != j)) // Guess we should take the absolute value 
+			if ((abs(A(i,j)) > dLargest) && (i != j)) // Guess we should take the absolute value 
 			{
 				dLargest = abs(A(i,j));
 				*row = i;
@@ -125,29 +139,37 @@ void JacobiSolver::JacobiRotation(mat &A, int rowLargest,int columnLargest,mat &
 	c = 1/sqrt(pow(t,2) +1 );
 	s = c*t;
 
+	double a_kk = A(rowLargest,rowLargest);
+	double a_ll = A(columnLargest,columnLargest);
+	double a_kl= A(rowLargest,columnLargest);
+	A(rowLargest,rowLargest) = a_kk*pow(c,2) - 2*a_kl*c*s + a_ll*pow(s,2);
+	A(columnLargest,columnLargest) = a_ll*pow(c,2) + 2*a_kl*c*s + a_kk*pow(s,2);
+	A(rowLargest,columnLargest) = (a_kk - a_ll)*c*s + a_kl*(pow(c,2) - pow(s,2));
+
 	// Then, we modify the A matrix:
 	for (int i = 0; i< sizeMatrix; i++)
 	{
 		// But first, we have to store our rotation values, before erasing them
-		double ik = A(i,rowLargest);
-		double il = A(i,columnLargest);
-		double kk = A(rowLargest,rowLargest);
-		double ll = A(columnLargest,columnLargest);
+		double a_ik = A(i,rowLargest);
+		double a_il = A(i,columnLargest);
 		// We change the value of the different coef of A
-		A(i,rowLargest) = ik*c - il*s;
-		A(i,columnLargest) = il*c + ik*s;
-		A(rowLargest,rowLargest) = kk*pow(c,2) - 2*A(rowLargest,columnLargest)*c*s + ll*pow(s,2);
-		A(columnLargest,columnLargest) = ll*pow(c,2) + 2*A(rowLargest,columnLargest)*c*s + kk*pow(s,2);
-		A(rowLargest,columnLargest) = (kk - ll)*c*s + A(rowLargest,columnLargest)*(pow(c,2) - pow(s,2));
-	}
-
-	// We have to compute our new eigenvectors too
-	for (int i = 0; i< sizeMatrix ; i++)
-	{
+		// Penser à blinder les cas i = column & i = row !!
+		if (i != rowLargest && i!= columnLargest)
+		{
+			A(i,rowLargest) = a_ik*c - a_il*s;
+			A(i,columnLargest) = a_il*c + a_ik*s;
+			A(rowLargest,i) = A(i,rowLargest);
+			A(columnLargest,i) = A(i,columnLargest);
+		}
+			// We have to compute our new eigenvectors too
+	//for (int i = 0; i< sizeMatrix ; i++)
+	//{
 		// Same than for A: we have to store some values before computing
 		double ik = B(i,rowLargest);
-		B(i,rowLargest) = c* ik - s*B(i,columnLargest);
-		B(i,columnLargest) = c*B(i,columnLargest) + s*B(i,rowLargest);
+		double il = B(i,columnLargest);
+		B(i,rowLargest) = c* ik - s*il;
+		B(i,columnLargest) = c*il + s*ik;
+	//}
 	}
 
 	return;
