@@ -5,7 +5,7 @@ class ArmaSolver :
 {
 public:
 	// constructors and destructors
-	ArmaSolver(SchEquation*, int, bool);
+	ArmaSolver(SchEquation**, int, bool);
 	~ArmaSolver(void);
 	void Solve(SchEquation);
 };

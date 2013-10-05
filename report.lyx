@@ -73,7 +73,28 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-x
+The problem was this time to solve the Schrödinger's equation for a system
+ of two electrons in a three-dimensional harmonic oscillator well.
+ The first step of the project was to do so for a system without a repulsive
+ coulomb interaction, then with this interaction.
+ The main point here was to demonstrate the results given in this article
+ // INSERER NOM DE L'ARTICLE ICI !!.
+ 
+\end_layout
+
+\begin_layout Standard
+To do so, we implemented our own algorithms for the Jacobi Rotation, algorithm
+ taking into account the presence of the interaction, or not.
+ We gave a special attention to the structure of the code.
+ We wanted it to be reusable, and the most convenient possible.
+ And this is why we apart from the equations, we also had a huge fight with
+ the pointers and other nice features of the C++ language.
+\end_layout
+
+\begin_layout Standard
+In this report, you will find our approaches, step by step, to first implement
+ the Jacobi solver, then the Armadillo solver, both of them outputting files
+ which had to be plottable.
 \end_layout
 
 \begin_layout Standard
@@ -90,7 +111,23 @@ Exercise a)
 \end_layout
 
 \begin_layout Standard
-x
+// Why we choose t to be the smaller of the root: 
+\end_layout
+
+\begin_layout Standard
+Partly because c is defined thanks to t, by the expression:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+c=\frac{1}{\sqrt{1+t^{2}}}
+\]
+
+\end_inset
+
+Thus, the closer t is to 1, the biggest the chance of round off error.
+ 
 \end_layout
 
 \begin_layout Subsection

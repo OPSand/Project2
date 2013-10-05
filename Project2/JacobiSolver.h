@@ -10,11 +10,17 @@ class JacobiSolver:
 private :
 	double d_tolerance;
 public:
-	JacobiSolver(SchEquation*, int, bool);
+	JacobiSolver(SchEquation**, int, bool);
 	~JacobiSolver(void);
 	void Solve(SchEquation);
 	double offDiag(mat &A, int* row, int* column);
-	inline bool isBiggerThanTolerance(double valueToTest);
+	inline bool isBiggerThanTolerance(double valueToTest)
+	{
+		bool bIsLargerThanTolerance = true;
+		if (valueToTest < d_tolerance) 
+			bIsLargerThanTolerance = false;
+		return bIsLargerThanTolerance;
+	};
 	void JacobiRotation(mat &A, int rowLargest,int columnLargest,mat &B);
 };
 

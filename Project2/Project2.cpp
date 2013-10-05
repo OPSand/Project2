@@ -21,61 +21,71 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//armaTest(); // debug
 
+
+#pragma region To Be Removed !!! ... Security for now
 	// initiate Equation objects - with or without interaction
 	// parameters (numbers) will need to be added to the class and constructor
-	const int NUMBER_OF_EQUATIONS = 2;
-	//SchEquation* eqs = new SchEquation[NUMBER_OF_EQUATIONS];// Do we want/need a table here ? Not really ?
-	double omega = 1;
+	const int NUMBER_OF_EQUATIONS = 1;
+	SchEquation** eqs = new SchEquation*[NUMBER_OF_EQUATIONS];// Do we want/need a table here ? Not really ?
+	/*double omega = 1;
 	double rhoMax = 5;
-	int nSteps = 10;
+	int nSteps = 1000000;*/
 	
-	SchEquation* eq = new SchEquation(omega,rhoMax,nSteps,false);
-	/*for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
+	//SchEquation* eq = new SchEquation(omega,rhoMax,nSteps,false);
+
+#pragma endregion
+	// I want to create a bunch of equations with arguments known. Because right now, i only manage one equation ... é_è
+	for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
 	{
 		double omega = 1;
-		double rhoMax = 5;
-		double nSteps = 10;
+		double rhoMax = 10;
+		int nSteps = 10;
 
+		// We declare new instances for our whole set of equations
 		eqs[i] = new SchEquation(omega, rhoMax, nSteps, false); // no parameters yet, but soon...
-		//N: (I think that your weird degug assertion is now solved -unless I didn't get what you wanted to do -but answer just when you hav time:
-		//why did you use 
-		//"eqs[i] = &SchEquation();" ? 
-		//What does the "&" stand here for? Seems to work fine with:
-		//"eqs[i] = new SchEquation();")
-	}*/
+	}
 	
 	if( INCLUDE_JACOBI )
 	{
 		// create JacobiSolver and add equations to it
-		JacobiSolver js = JacobiSolver(eq, NUMBER_OF_EQUATIONS, INCLUDE_TIMERS);
+		JacobiSolver js = JacobiSolver(eqs, NUMBER_OF_EQUATIONS, INCLUDE_TIMERS);
 
 		// solve the equations
 		js.SolveAll(); // NOTE: Causes assertion fault while debugging. Not fatal, but should be looked into.
-
-		if (MAKE_PLOTS)
+		// XXX : The structure here is kind of weird. Shouldn't we do that directly 
+		/*if (MAKE_PLOTS)
 		{
 			// debug
 			rowvec rv = randu<rowvec>(nSteps);
 			mat m = randu<mat>(nSteps, nSteps);
 
 			// plot things (the SchEquation class will be able to write its solutions to file)
-			eq->SetSolutions(rv, m);
-			eq->SaveSolutions("test.txt");
-		}
+			for (int i= 0; i < NUMBER_OF_EQUATIONS; i++)
+			{
+				stringstream sstream;
+				sstream << i;
+				eqs[i]->SetSolutions(rv, m);
+				//eqs[i]->SaveSolutions("test" + sstream.str()+ ".txt"); // XXX : remettre en place
+			}
+		}*/
 	}
 
 	if( INCLUDE_ARMADILLO )
 	{
 		// create ArmaSolver and add equations to it
-		ArmaSolver as = ArmaSolver(eq, NUMBER_OF_EQUATIONS, INCLUDE_TIMERS);
+		ArmaSolver as = ArmaSolver(eqs, NUMBER_OF_EQUATIONS, INCLUDE_TIMERS);
 
 		// solve the equations
-		as.Solve(*eq);
+		for (int i= 0 ; i < NUMBER_OF_EQUATIONS ; i++)
+			as.Solve(*eqs[i]);
 
-		if (MAKE_PLOTS)
-		{
 			// plot things (the SchEquation class will be able to write its solutions to file)
-			eq->SaveSolutions("test2.txt");
+		for (int i= 0; i < NUMBER_OF_EQUATIONS; i++)
+		{
+			stringstream sstream;
+			sstream << i;
+			//eqs[i]->SetSolutions(rv, m);
+			eqs[i]->SaveSolutions("test" + sstream.str()+ ".txt");
 		}
 	}
 

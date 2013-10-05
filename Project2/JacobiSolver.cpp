@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "JacobiSolver.h"
 
-
-JacobiSolver::JacobiSolver(SchEquation* equations, int equationCount, bool useTimers):Solver(equations, equationCount, useTimers)
+// Isn't this suppose to be a by copy constructor ?!! Nop
+JacobiSolver::JacobiSolver(SchEquation** equations, int equationCount, bool useTimers):Solver(equations, equationCount, useTimers)
 {
 	// remember: Solver constructor is called first
 
@@ -25,19 +25,19 @@ void JacobiSolver::Solve(SchEquation eq)
 		// How do we describe the eigenvectors ?
 		int nbSteps = eq.nSteps();
 		printf("Beginning A ! \t");
-		/*printf("How many steps? \t");
-		cin >> nbSteps;
-		double h = (1.0/(((double)nbSteps) - 1.0)); // This is our step length
-		double x = 0.0f;*/
 		mat A = eq.A();
+		
+		// XXX :  This is just printing the A matrix
 		for (unsigned int i=0; i < A.n_rows; i++) // Unsigned to prevent a warning to be fire.
 		{
-			for (unsigned int j=0; j< A.n_rows; j++)
-				printf(" %f \t", A(i,j));
+			//for (unsigned int j=0; j< A.n_rows; j++)
+				printf(" %f \t", A(i,i));
 			printf("\n");
 		}
 		// We have initialize our matrix  .
-		/*A.zeros();
+		/*
+		// XXX : And this is something that should be removed !!
+		A.zeros();
 		for (int i= 0; i < nbSteps; i++)
 		{
 			x = i*h;
@@ -51,31 +51,37 @@ void JacobiSolver::Solve(SchEquation eq)
 		// And then, launch the Jacobi rotation
 		int rowLargest = 0;
 		int columnLargest = 0;
-		mat B = mat(nbSteps,nbSteps);
-		B.eye();
+		_B = mat(nbSteps,nbSteps);
+		_B.eye();
 		while (isBiggerThanTolerance(offDiag(A,&rowLargest,&columnLargest))) // While the biggest element is bigger than the tolerance threshold
 		{
 			// Then similarity transfo.
-			JacobiRotation(A,rowLargest,columnLargest,B);
+			JacobiRotation(A,rowLargest,columnLargest,_B);
 			nbIterations ++;
 		}
 		// Then we have finish our Jacobi's process
 		// And we need to print the result ...
-		for (unsigned int i=0; i < B.n_rows; i++) // Unsigned to prevent a warning to be fire.
+		
+		
+		
+#pragma region Printing matrix
+		
+		
+		/*for (unsigned int i=0; i < _B.n_rows; i++) // Unsigned to prevent a warning to be fire.
 		{
-			for (unsigned int j=0; j< B.n_rows; j++)
-				printf(" %f \t", B(i,j));
+			for (unsigned int j=0; j< _B.n_rows; j++)
+				printf(" %f \t", _B(i,j));
 			printf("\n");
-		}
+		}*/
 
 		printf ("And this is A ! \n");
 		for (unsigned int i=0; i < A.n_rows; i++) // Unsigned to prevent a warning to be fire.
 		{
-			for (unsigned int j=0; j< A.n_rows; j++)
-				printf(" %f \t", A(i,j));
+			//for (unsigned int j=0; j< A.n_rows; j++)
+				printf(" %f \t", A(i,i));
 			printf("\n");
 		}
-
+#pragma endregion 
 
 		cout << "I solved this! :D" << endl; // debug
 		printf("And it took me : %d similarity transformations\n", nbIterations);
@@ -90,7 +96,6 @@ void JacobiSolver::Solve(SchEquation eq)
 double JacobiSolver::offDiag(mat &A, int* row, int* column)
 {
 	double dLargest = 0.0;
-	bool bIsLargerThanTolerance = true;
 	int sizeMatrix = A.n_rows;
 	for (int i = 0; i < sizeMatrix ; i++)
 	{
@@ -104,18 +109,17 @@ double JacobiSolver::offDiag(mat &A, int* row, int* column)
 			}
 		}
 	}
-
 	return dLargest;
 }
 
 /* This function test the largest off diag element against the tolerance */
-inline bool JacobiSolver::isBiggerThanTolerance(double valueToTest)
+/*inline bool JacobiSolver::isBiggerThanTolerance(double valueToTest)
 {
 	bool bIsLargerThanTolerance = true;
 	if (valueToTest < d_tolerance) 
 		bIsLargerThanTolerance = false;
 	return bIsLargerThanTolerance;
-}
+}*/
 
 /* This function will process the whole similarity transformation process */
 void JacobiSolver::JacobiRotation(mat &A, int rowLargest,int columnLargest,mat &B)
@@ -129,9 +133,9 @@ void JacobiSolver::JacobiRotation(mat &A, int rowLargest,int columnLargest,mat &
 	// Then, we find tan
 	double t = 0.0;
 	if (tau >= 0)
-		t = tau + sqrt(1 + pow(tau,2));
+		t = -tau + sqrt(1 + pow(tau,2));
 	else
-		t = -(-tau +sqrt(1 + pow(tau,2)));
+		t = -tau - sqrt(1 + pow(tau,2));
 
 	// Once we have tan, we can find cos and sin
 	double c = 0.0;
@@ -145,7 +149,7 @@ void JacobiSolver::JacobiRotation(mat &A, int rowLargest,int columnLargest,mat &
 	A(rowLargest,rowLargest) = a_kk*pow(c,2) - 2*a_kl*c*s + a_ll*pow(s,2);
 	A(columnLargest,columnLargest) = a_ll*pow(c,2) + 2*a_kl*c*s + a_kk*pow(s,2);
 	A(rowLargest,columnLargest) = (a_kk - a_ll)*c*s + a_kl*(pow(c,2) - pow(s,2));
-
+	A(columnLargest,rowLargest) = A(rowLargest,columnLargest);
 	// Then, we modify the A matrix:
 	for (int i = 0; i< sizeMatrix; i++)
 	{
@@ -158,8 +162,8 @@ void JacobiSolver::JacobiRotation(mat &A, int rowLargest,int columnLargest,mat &
 		{
 			A(i,rowLargest) = a_ik*c - a_il*s;
 			A(i,columnLargest) = a_il*c + a_ik*s;
-			A(rowLargest,i) = A(i,rowLargest);
-			A(columnLargest,i) = A(i,columnLargest);
+			//A(rowLargest,i) = A(i,rowLargest);
+			//A(columnLargest,i) = A(i,columnLargest);
 		}
 			// We have to compute our new eigenvectors too
 	//for (int i = 0; i< sizeMatrix ; i++)

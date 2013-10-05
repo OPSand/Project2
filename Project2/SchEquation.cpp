@@ -25,11 +25,11 @@ SchEquation::SchEquation(double omega, double rhoMax, int nSteps, bool coulomb)
 
 	// initialize matrix (note: coulomb, omega etc. MUST be set before this!)
 	mat A = mat(_nSteps, _nSteps);
-	A.fill(0);
+	/*A.fill(0);
 	A.diag(0) = diag();
 	A.diag(1) = nonDiag();
-	A.diag(-1) = nonDiag();
-
+	A.diag(-1) = nonDiag(); // XXX : Should be check !!!!
+	*/
 	// initialize solutions
 	_eigVal = rowvec(_nSteps);
 	_eigVec = mat(_nSteps, _nSteps);
@@ -45,7 +45,9 @@ void SchEquation::SaveSolutions(string path)
 {
 	mat plot = mat(_nSteps, 2);
 	plot.col(0) = _rho; // x
-	plot.col(1) = _eigVec.diag(); // y
+	printf("\n %f \t",_eigVec.diag());
+	//plot.col(1) = _eigVec.diag(); // y
+	
 	plot.save(path, raw_ascii);
 }
 
@@ -133,4 +135,9 @@ void SchEquation::SetSolutions(rowvec eigVal, mat eigVec)
 {
 	_eigVal = eigVal;
 	_eigVec = eigVec;
+	/*for (int i=0; i< _eigVec.n_rows;i++)
+	{
+		for (int j = 0; j < _eigVec.n_rows;j++)
+			printf ("(%d %d) \t  %f ||", i,j,_eigVec(i,j));
+	}*/
 }
