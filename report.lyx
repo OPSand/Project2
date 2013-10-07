@@ -77,8 +77,6 @@ The problem was this time to solve the Schrödinger's equation for a system
  of two electrons in a three-dimensional harmonic oscillator well.
  The first step of the project was to do so for a system without a repulsive
  coulomb interaction, then with this interaction.
- The main point here was to demonstrate the results given in this article
- // INSERER NOM DE L'ARTICLE ICI !!.
  
 \end_layout
 
@@ -107,15 +105,61 @@ Exercises
 \end_layout
 
 \begin_layout Subsection
-Exercise a)
+Jacobi's solver without Coulomb's interaction
 \end_layout
 
 \begin_layout Standard
-// Why we choose t to be the smaller of the root: 
+We know that the difference between the matrices A and B is defined by the
+ following expression:
 \end_layout
 
 \begin_layout Standard
-Partly because c is defined thanks to t, by the expression:
+\begin_inset Formula 
+\[
+\Vert B-A\Vert_{F}^{2}=4(1-c)\sum_{i=1,i!=k,l}^{n}(a_{ik}^{2}+a_{il}^{2})+\frac{2a_{lk}^{2}}{c^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The main point here is to minimize the difference between A and B, which
+ could be understood as the diagonalization of the matrix.
+\end_layout
+
+\begin_layout Standard
+We already know that 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $a_{k,l}$
+\end_inset
+
+ cannot be null since it is the biggest non diagonal element of A.
+ Thus, the only possibility for this difference to tends towards zero is
+ to have the difference 
+\begin_inset Formula $4(c-1)$
+\end_inset
+
+ tending towards zero.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $c$
+\end_inset
+
+ can be expressed as 
 \end_layout
 
 \begin_layout Standard
@@ -126,40 +170,383 @@ c=\frac{1}{\sqrt{1+t^{2}}}
 
 \end_inset
 
-Thus, the closer t is to 1, the biggest the chance of round off error.
+
+\end_layout
+
+\begin_layout Standard
+Since c should be as closed as possible from 1, we should have 
+\begin_inset Formula $t$
+\end_inset
+
+ close to 0.
+ We too know that 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+c=s/t
+\]
+
+\end_inset
+
+so we should have 
+\begin_inset Formula $t\approx s$
+\end_inset
+
+, which is true if and only if 
+\begin_inset Formula $\Vert\theta\Vert\lll\pi/4$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Test of our algorithm:
+\end_layout
+
+\begin_layout Standard
+We know that the first eigenvalues should be around 3,6 then 11.
+ This is the result we got for rhoMax = 1000, with 1000 steps:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Screens/first eigenvalues.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Caption
+
+\begin_layout Plain Layout
+First test of our algorithm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We chose a tolerance threhold of 
+\begin_inset Formula $10^{-7}$
+\end_inset
+
+.
+ And this test is satisfied: we can go on.
+\end_layout
+
+\begin_layout Subsection
+Comparison with the tqli algorithm
+\end_layout
+
+\begin_layout Standard
+We fixed rhoMax at 1000.
+ We are know trying to determine how many points we need in order to get
+ the three lowest eigenvalues with four leading digits.
  
 \end_layout
 
-\begin_layout Subsection
-Exercise b)
+\begin_layout Standard
+With experiments, we chose a number of 30 steps.
+ With 30 steps, it implies that around 100 similarity transformations are
+ required in order to have the non diagonal element equal to 0 (equal should
+ be understood here as 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $equal\pm toleranceThresold$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+).
+ 
 \end_layout
 
 \begin_layout Standard
-x
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Screens/Elapsed time Jacobi.png
+	scale 70
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Subsection
-Exercise c)
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Timing of our Algorithm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-x
-\end_layout
-
-\begin_layout Subsection
-Exercise d)
-\end_layout
-
-\begin_layout Standard
-x
-\end_layout
-
-\begin_layout Subsection
-Exercise e)
+So we compared the result of our algorithm with the tqli algorithm, found
+ in the lib.cpp file.
+ This algorithm is based on the Householder's algorithm, which is, as we
+ saw it in the lecture, more efficient than the Jacobi's algorithm, doing
+ a reflexion instead of a rotation.
+ Furthermore, the Householder's algorithm is designed for tridiagonal matrices,
+ which is not the case of our algorithm, designed to be used even for the
+ most general cases.
 \end_layout
 
 \begin_layout Standard
-x
+// tqli nécessite trop d'itérations...
+ Reste à trouver pourquoi.
+\end_layout
+
+\begin_layout Subsection
+Jacobi's solver with Coulomb's interaction
+\end_layout
+
+\begin_layout Standard
+We know take into account the repulsive Coulomb's interaction.
+ Thus, our expression of the potential, which was
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V_{i}=\rho_{i}^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+now becomes
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V_{i}=\rho_{i}^{2}*\omega_{r}^{2}+\frac{1}{\rho_{i}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here 
+\begin_inset Formula $\omega_{r}$
+\end_inset
+
+ represents the stength of the oscillator potential.
+ We treat four cases, four different values of
+\begin_inset Formula $\omega_{r}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\omega_{r}=0.01$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\omega_{r}=0.5$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\omega_{r}=1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\omega_{r}=5$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And the result was quite rational: the smaller value of 
+\begin_inset Formula $\omega_{r}$
+\end_inset
+
+we take, the more amortized the amplitude of the result is.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Screens/0_01.png
+	scale 60
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+For 
+\begin_inset Formula $\omega_{r}=0.01$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Screens/5.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+For 
+\begin_inset Formula $\omega_{r}=5$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Plotting and explanations !
+\end_layout
+
+\begin_layout Standard
+So we implemented algorithms for both the non-interaction and the interaction
+ cases.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Screens/First try.png
+	scale 60
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Plot without Coulomb's interaction
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -178,6 +565,38 @@ target "https://github.com/OPSand/Project2"
 
 \end_layout
 
+\begin_layout Standard
+We attached a lot of importance to the structure of the code.
+ We wanted to create a code reusable, and with an easily understandable
+ organization.
+ Thus, we tried to respect the concept of 
+\begin_inset Quotes eld
+\end_inset
+
+Model View Controller
+\begin_inset Quotes erd
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Itemize
+the main class, Project2.cpp, calling the other functions and fixing the
+ important parameters
+\end_layout
+
+\begin_layout Itemize
+the functional classes, Equation.cpp and Solver.cpp.
+ Each of these classes has inherited classes, such as ArmaSolver.cpp or JacobiSol
+ver.cpp, and contains the most global elements for each type of objects
+\end_layout
+
+\begin_layout Itemize
+the view is dealt with inside the Equation.cpp package: the point here is
+ to export the data towards a .txt file, in order to read them later on with
+ Matlab.
+\end_layout
+
 \begin_layout Section
 Conclusion
 \end_layout
@@ -191,7 +610,7 @@ x
 \end_layout
 
 \begin_layout Subsection
-Critique
+Comment
 \end_layout
 
 \begin_layout Standard
@@ -200,7 +619,17 @@ We would like to provide the following items of feedback for future versions
 \end_layout
 
 \begin_layout Itemize
-x
+Including the lib.cpp and lib.h into a Visual Studio project was a bit of
+ a challenge, because to begin with, even the inclusions such as 
+\begin_inset Quotes eld
+\end_inset
+
+sys/time.h
+\begin_inset Quotes erd
+\end_inset
+
+, which are working pretty fine on Unix systems, do not work under a Windows
+ operating system.
 \end_layout
 
 \end_body

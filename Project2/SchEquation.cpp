@@ -14,22 +14,18 @@ SchEquation::SchEquation(double omega, double rhoMax, int nSteps, bool coulomb)
 	_nSteps = nSteps;
 	_omega = omega;
 	_coulomb = coulomb;
+	_rhoMax = rhoMax;
 
 	// initialize rho
 	_stepSize = rhoMax / (_nSteps - 1);
 	_rho = vec(_nSteps);
 	for(int i = 0; i < _nSteps; i++)
 	{
-		_rho(i) = i * _stepSize; // last element is rhoMax
+		_rho(i) = (i+1) * _stepSize; // last element is rhoMax
 	}
 
 	// initialize matrix (note: coulomb, omega etc. MUST be set before this!)
-	mat A = mat(_nSteps, _nSteps);
-	/*A.fill(0);
-	A.diag(0) = diag();
-	A.diag(1) = nonDiag();
-	A.diag(-1) = nonDiag(); // XXX : Should be check !!!!
-	*/
+	_A = InitMat();
 	// initialize solutions
 	_eigVal = rowvec(_nSteps);
 	_eigVec = mat(_nSteps, _nSteps);
@@ -45,9 +41,7 @@ void SchEquation::SaveSolutions(string path)
 {
 	mat plot = mat(_nSteps, 2);
 	plot.col(0) = _rho; // x
-	printf("\n %f \t",_eigVec.diag());
-	//plot.col(1) = _eigVec.diag(); // y
-	
+	plot.col(1) = _eigVec.diag(); // y	
 	plot.save(path, raw_ascii);
 }
 
@@ -89,16 +83,42 @@ vec SchEquation::diag()
 	return d;
 }
 
+// Returns non-diagonal element
+double SchEquation::nonDiagElem()
+{
+	int h = _rhoMax / (_nSteps - 1);
+	return ((double)-1/pow(h,2));
+}
 // return non-diagonal as column vector
 vec SchEquation::nonDiag()
 {
 	vec nd = vec(_nSteps - 1); // hopefully obvious
-
-	nd.fill(nonDiagElem());
+	for (int i = 0; i< _nSteps; i++)
+		nd(i) = nonDiagElem();
 
 	return nd;
 }
-
+double* SchEquation::double_nonDiag()
+{
+	double* vec = new double [_nSteps -1];
+	for (int i = 0; i<_nSteps; i++)
+		vec[i] = nonDiagElem();
+	return vec;
+}
+// Returns diagonal element
+double SchEquation::diagElem(int i)
+{
+	int h = _rhoMax / (_nSteps - 1);
+	return ((double)2/h) + V(i);
+	//return 2 * HM2 + V(i);
+}
+double* SchEquation::double_Diag()
+{
+	double* vec = new double[_nSteps];
+	for (int i = 0; i<_nSteps;i++)
+		vec[i] = SchEquation::diagElem(i);
+	return vec;
+}
 mat SchEquation::InitMat()
 {
 	// We have some operations to do here:
@@ -106,7 +126,7 @@ mat SchEquation::InitMat()
 	_A.zeros(); // Fill it with zeros
 	for (int i= 0; i < _nSteps; i++)
 	{
-		_A(i,i) = diagElem(i);
+		_A(i,i) = SchEquation::diagElem(i);
 		if (i >= 1)
 			_A(i,i-1)= nonDiagElem();
 		if (i < (_nSteps-1))
@@ -120,7 +140,6 @@ mat SchEquation::InitMat()
 //  But first, we have to initialize the matrix !
 mat SchEquation::A()
 {
-	_A = InitMat();
 	return _A;
 }
 
@@ -135,9 +154,4 @@ void SchEquation::SetSolutions(rowvec eigVal, mat eigVec)
 {
 	_eigVal = eigVal;
 	_eigVec = eigVec;
-	/*for (int i=0; i< _eigVec.n_rows;i++)
-	{
-		for (int j = 0; j < _eigVec.n_rows;j++)
-			printf ("(%d %d) \t  %f ||", i,j,_eigVec(i,j));
-	}*/
 }

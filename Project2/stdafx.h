@@ -18,5 +18,7 @@
 #include "Equation.h"
 #include "SchEquation.h"
 
+#include "lib.h"
+
 using namespace std;
 using namespace arma;

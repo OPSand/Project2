@@ -27,18 +27,11 @@ protected:
 
 	// protected methods
 	double V(int);
-	inline double diagElem(int i)
-	{
-		return 2 * HM2 + V(i);
-	};
-	inline double nonDiagElem(void)
-	{
-		return -HM2;
-	};
 	mat SchEquation::InitMat();
 	vec diag(void);
 	vec nonDiag(void);
-
+	double SchEquation::diagElem(int i);
+	double SchEquation::nonDiagElem();
 public:
 	// constructors and destructors
 	SchEquation(double omega, double rhoMax, int nSteps, bool coulomb);
@@ -51,6 +44,8 @@ public:
 	// methods that expose parameters to the Solver classes go here
 	inline int nSteps(void)
 	{return _nSteps;};
+	double* SchEquation::double_nonDiag(); // Function used for tqli. We're not working with vector from arma anymore
+	double* SchEquation::double_Diag(); // Function used for tqli
 	mat A(void);
 };
 

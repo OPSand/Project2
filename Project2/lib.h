@@ -19,13 +19,13 @@ using namespace std;
 
 #define   NULL_PTR   (void *) 0
 #define   ZERO       1.0E-10
-//#define   INFINITY   1.0E15
+#define   INFINITY   1.0E15
 #define   UL         unsigned long
 
          /* a macro used in function pythag() */
 
-static float sqrarg;
-#define SQR(a) ((sqrarg = (a)) == 0.0 ? 0.0 : sqrarg * sqrarg)
+//static float sqrarg;
+//#define SQR(a) ((sqrarg = (a)) == 0.0 ? 0.0 : sqrarg * sqrarg)
 
 
      /* Macro definitions for integer arguments only */
@@ -33,18 +33,18 @@ static float sqrarg;
 #define   SIGN(a,b) ((b)<0 ? -fabs(a) : fabs(a))
 
     // ******   data declaration  ******* 
-
+/*
 typedef   struct  {   // structure definition for execution time   
   unsigned long long int
                           tick,
                            sec,
                            min,
                           hour;
-} TID; 
+} TID; */
 
     // Function declarations
 
-TID time_step(int num);
+//TID time_step(int num);
 void  **matrix(int, int, int);
 void free_matrix(void **);
 void rk4(double *, double *, int, double, double, double  *,

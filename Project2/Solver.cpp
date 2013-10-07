@@ -33,43 +33,14 @@ void Solver::SolveAll()
 		Solve(*_equations[i]); // abstract function to be defined in subclasses
 		//this->getResultMat(); // XXX : This is what we should print ?
 #pragma region Printing Routine
-	 //if (MAKE_PLOTS)
-	//	{
 			// debug
-		rowvec rv = randu<rowvec>(_equations[i]->nSteps());
-			//mat m = randu<mat>(nSteps, nSteps);
-
+			rowvec rv = randu<rowvec>(_equations[i]->nSteps());
 			// plot things (the SchEquation class will be able to write its solutions to file)
 				stringstream sstream;
 				sstream << i;
-				mat result = this->getResultMat();
-				/*for (int j = 0; j <_equations[i]->nSteps(); j++)
-				{
-					for (int k = 0; k< _equations[i]->nSteps(); k++)
-						printf ("(%d %d) \t  %f ||", j,k,result(j,k));
-				}*/
-				//_equations[i]->SetSolutions(rv,this->getResultMat());
-				//_equations[i]->SaveSolutions("test" + sstream.str()+ ".txt"); // XXX : remettre en places
-		//}
+				mat result = this->getAMat(); // Then we get rv and the result
+				_equations[i]->SetSolutions(rv,result); 
+				_equations[i]->SaveSolutions("test" + sstream.str()+ ".txt"); // XXX : remettre en places
 #pragma endregion
 	}
-	//Solve(_equations[0]);
-}
-
-// return the time used to solve
-inline double Solver::elapsedTime(void)
-{
-	return ((double)(_finish - _start))/((double)CLOCKS_PER_SEC);
-}
-
-// start timer
-inline void Solver::startClock(void)
-{
-	_start = clock();
-}
-
-// stop timer
-inline void Solver::stopClock(void)
-{
-	_finish = clock();
 }

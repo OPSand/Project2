@@ -13,36 +13,25 @@ void armaTest();
 int _tmain(int argc, _TCHAR* argv[])
 {
 	// Program flow control flags (set at compile time)
-	const bool INCLUDE_JACOBI = true; // ex. b)
+	const bool INCLUDE_JACOBI = false; // ex. b)
 	const bool INCLUDE_ARMADILLO = false; // ex. b)
 	const bool INCLUDE_TIMERS = true; // ex. b)
 	const bool MAKE_PLOTS = true; // ex. d)
-	// const bool INCLUDE_LANCZOS = false; // ex. e), voluntary
+	const bool INCLUDE_LIB = true; // ex b)
 
 	//armaTest(); // debug
 
-
-#pragma region To Be Removed !!! ... Security for now
-	// initiate Equation objects - with or without interaction
-	// parameters (numbers) will need to be added to the class and constructor
 	const int NUMBER_OF_EQUATIONS = 1;
-	SchEquation** eqs = new SchEquation*[NUMBER_OF_EQUATIONS];// Do we want/need a table here ? Not really ?
-	/*double omega = 1;
-	double rhoMax = 5;
-	int nSteps = 1000000;*/
-	
-	//SchEquation* eq = new SchEquation(omega,rhoMax,nSteps,false);
-
-#pragma endregion
-	// I want to create a bunch of equations with arguments known. Because right now, i only manage one equation ... é_è
+	SchEquation** eqs = new SchEquation*[NUMBER_OF_EQUATIONS];
+	// We create a set of equations
 	for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
 	{
-		double omega = 1;
-		double rhoMax = 10;
-		int nSteps = 10;
+		double omega = 5;
+		double rhoMax = 1000;
+		int nSteps = 30;
 
 		// We declare new instances for our whole set of equations
-		eqs[i] = new SchEquation(omega, rhoMax, nSteps, false); // no parameters yet, but soon...
+		eqs[i] = new SchEquation(omega, rhoMax, nSteps, false);
 	}
 	
 	if( INCLUDE_JACOBI )
@@ -51,7 +40,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		JacobiSolver js = JacobiSolver(eqs, NUMBER_OF_EQUATIONS, INCLUDE_TIMERS);
 
 		// solve the equations
-		js.SolveAll(); // NOTE: Causes assertion fault while debugging. Not fatal, but should be looked into.
+		js.SolveAll();
 		// XXX : The structure here is kind of weird. Shouldn't we do that directly 
 		/*if (MAKE_PLOTS)
 		{
@@ -69,7 +58,27 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 		}*/
 	}
-
+	if (INCLUDE_LIB)
+	{
+		// Param for tqli : vec d is the diagonal, vec e is the sub-diagonal. n is the size, z the output
+		for (int i = 0 ; i < NUMBER_OF_EQUATIONS; i++)
+		{
+			double* d = new double [eqs[i]->nSteps()];
+			double* e = new double [eqs[i]->nSteps()];
+			double** z = new double*[eqs[i]->nSteps()];
+			for (int j= 0; j<eqs[i]->nSteps(); j++)
+				z[j] = new double [eqs[i]->nSteps()];
+			d = eqs[i]->double_Diag();
+			e = eqs[i]->double_nonDiag();
+			printf("This is A before ! \n");
+			for (int k = 0; k < eqs[i]->nSteps(); k++)
+				printf("%f \t",d[k]); 
+			tqli(d,e,eqs[i]->nSteps(),z);
+			printf("This is A after ! \n");
+			for (int k = 0; k < eqs[i]->nSteps(); k++)
+				printf("%f \t",d[k]); 
+		}
+	}
 	if( INCLUDE_ARMADILLO )
 	{
 		// create ArmaSolver and add equations to it

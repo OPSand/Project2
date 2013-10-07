@@ -1,4 +1,6 @@
-    /*
+#include "stdafx.h" 
+#include <WinSock2.h>  
+/*
     ** The library program  module
     **             lib.cpp
     **
@@ -215,7 +217,7 @@ double ran3(long *idum)
     **    TID run     - returns the time difference. 
     */
 
-TID time_step(int num)
+/*TID time_step(int num)
 {
   unsigned long long int
                            num_sec;
@@ -227,7 +229,7 @@ TID time_step(int num)
   TID
                            ex_time;
   struct timeval
-                           tp;
+						   tp;
 
   if(num == 1) {              // initialization of time
 
@@ -256,7 +258,7 @@ TID time_step(int num)
   return ex_time;
 
 } // End: function time_step()
-
+*/
   /*
    * The function                             
    *      void  **matrix()                    
@@ -269,7 +271,7 @@ TID time_step(int num)
    *                 element                  
    * Returns a void  **pointer to the reserved memory location.                                
    */
-
+   
 void **matrix(int row, int col, int num_bytes)
   {
   int      i, num;
@@ -544,9 +546,9 @@ void tqli(double *d, double *e, int n, double **z)
             if((double)(fabs(e[m])+dd) == dd) break;
          }
          if(m != l) {
-            if(iter++ == 30) {
+            if(iter++ == 300) {
                printf("\n\nToo many iterations in tqli.\n");
-               exit(1);
+               return;
             }
             g = (d[l+1] - d[l])/(2.0 * e[l]);
             r = pythag(g,1.0);
@@ -672,14 +674,17 @@ void tqli(double *d, double *e, int n, double **z)
     }
  } // End: function tred2(), (C) Copr. 1986-92 Numerical Recipes Software )
 
-
+ 
 double pythag(double a, double b)
 {
   double absa,absb;
   absa=fabs(a);
   absb=fabs(b);
-  if (absa > absb) return absa*sqrt(1.0+SQR(absb/absa));
-  else return (absb == 0.0 ? 0.0 : absb*sqrt(1.0+SQR(absa/absb)));
+  if (absa > absb) return  absa*sqrt (1.0 + (absb/absa == 0.0 ? 0.0 : absb/absa * absb/absa));
+  //if (absa > absb) return absa*sqrt(1.0+SQR(absb/absa));
+  //else return (absb == 0.0 ? 0.0 : absb*sqrt(1.0+SQR(absa/absb)));
+  else return (absb == 0.0 ? 0.0 : absa*sqrt (1 + (absa/absb == 0.0 ? 0.0 : absa/absb * absa/absb)));
+  
 }
 // End: function pythag(), (C) Copr. 1986-92 Numerical Recipes Software )%.
 

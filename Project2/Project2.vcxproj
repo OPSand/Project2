@@ -82,6 +82,7 @@
     <ClInclude Include="ArmaSolver.h" />
     <ClInclude Include="Equation.h" />
     <ClInclude Include="JacobiSolver.h" />
+    <ClInclude Include="lib.h" />
     <ClInclude Include="SchEquation.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="stdafx.h" />
@@ -91,6 +92,7 @@
     <ClCompile Include="ArmaSolver.cpp" />
     <ClCompile Include="Equation.cpp" />
     <ClCompile Include="JacobiSolver.cpp" />
+    <ClCompile Include="lib.cpp" />
     <ClCompile Include="Project2.cpp" />
     <ClCompile Include="SchEquation.cpp" />
     <ClCompile Include="Solver.cpp" />
