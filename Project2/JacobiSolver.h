@@ -22,5 +22,6 @@ public:
 		return bIsLargerThanTolerance;
 	};
 	void JacobiRotation(mat &A, int rowLargest,int columnLargest,mat &B);
+	void NormalizedEigenvector(mat &B);
 };
 

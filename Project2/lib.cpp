@@ -546,7 +546,7 @@ void tqli(double *d, double *e, int n, double **z)
             if((double)(fabs(e[m])+dd) == dd) break;
          }
          if(m != l) {
-            if(iter++ == 300) {
+            if(iter++ == 30) {
                printf("\n\nToo many iterations in tqli.\n");
                return;
             }
@@ -680,10 +680,10 @@ double pythag(double a, double b)
   double absa,absb;
   absa=fabs(a);
   absb=fabs(b);
-  if (absa > absb) return  absa*sqrt (1.0 + (absb/absa == 0.0 ? 0.0 : absb/absa * absb/absa));
+  if (absa > absb) return  absa*sqrt (1.0 + ((absb/absa) == 0.0 ? 0.0 : absb/absa * absb/absa));
   //if (absa > absb) return absa*sqrt(1.0+SQR(absb/absa));
   //else return (absb == 0.0 ? 0.0 : absb*sqrt(1.0+SQR(absa/absb)));
-  else return (absb == 0.0 ? 0.0 : absa*sqrt (1 + (absa/absb == 0.0 ? 0.0 : absa/absb * absa/absb)));
+  else return (absb == 0.0 ? 0.0 : absa*sqrt (1 + ((absa/absb) == 0.0 ? 0.0 : absa/absb * absa/absb)));
   
 }
 // End: function pythag(), (C) Copr. 1986-92 Numerical Recipes Software )%.

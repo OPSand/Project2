@@ -1,14 +1,12 @@
 #include "stdafx.h"
 #include "JacobiSolver.h"
 
-// Isn't this suppose to be a by copy constructor ?!! Nop
 JacobiSolver::JacobiSolver(SchEquation** equations, int equationCount, bool useTimers):Solver(equations, equationCount, useTimers)
 {
 	// remember: Solver constructor is called first
 
 	d_tolerance = 0.0000000001;
 }
-
 
 JacobiSolver::~JacobiSolver(void)
 {
@@ -25,32 +23,29 @@ void JacobiSolver::Solve(SchEquation eq)
 		// The code to implement Jacobi's method goes here
 		// First, we should "transform" our equation into a matrix, then look for 
 		// The biggest non diag. element. Then check if bigger than the tolerance, and ! Hop!
-		// How do we describe the eigenvectors ?
 		int nbSteps = eq.nSteps();
 		printf("Beginning A ! \t");
 		_A = eq.A();
 		
 		// XXX :  This is just printing the A matrix
-		/*for (unsigned int i=0; i < _A.n_rows; i++) // Unsigned to prevent a warning to be fire.
+		for (unsigned int i=0; i < _A.n_rows; i++) // Unsigned to prevent a warning to be fire.
 		{
 			for (unsigned int j=0; j< _A.n_rows; j++)
 				printf(" %f \t", _A(i,j));
 			printf("\n");
-		}*/
+		}
 		// And then, launch the Jacobi rotation
 		int rowLargest = 0;
 		int columnLargest = 0;
 		_B = mat(nbSteps,nbSteps);
 		_B.eye();
+
 		while (isBiggerThanTolerance(offDiag(_A,&rowLargest,&columnLargest))) // While the biggest element is bigger than the tolerance threshold
 		{
 			// Then similarity transfo.
 			JacobiRotation(_A,rowLargest,columnLargest,_B);
 			nbIterations ++;
 		}
-		// Then we have finish our Jacobi's process
-		// And we need to print the result ...
-			
 #pragma region Printing matrix
 		
 		printf ("And this is A ! \n");
@@ -63,12 +58,13 @@ void JacobiSolver::Solve(SchEquation eq)
 		}
 
 #pragma endregion 
-
+		
 		cout << "I solved this! :D" << endl; // debug
 		printf("And it took me : %d similarity transformations\n", nbIterations);
 		// Finally, we stop our timer
 		stopClock();
 		printf("[Jacobi's rotation] Elapsed time: %f",elapsedTime());
+		NormalizedEigenvector(_B);
 	}
 	else 
 	{
@@ -141,6 +137,40 @@ void JacobiSolver::JacobiRotation(mat &A, int rowLargest,int columnLargest,mat &
 		double il = B(i,columnLargest);
 		B(i,rowLargest) = c* ik - s*il;
 		B(i,columnLargest) = c*il + s*ik;
+		/*if (B(i,rowLargest) != ik)
+			printf("%f \t",B(i,rowLargest));
+		if (B(i,columnLargest) != il)
+				printf("%f \t",B(i,columnLargest));*/
 	}
+	return;
+}
+
+// This function will just normalize our eigenvectors
+// We could not use the function norm of Armadillo, since lapack is not compatible -probably- with 
+// Windows 7 ~
+void JacobiSolver::NormalizedEigenvector(mat &B)
+{
+	// We compute the norm of the matrix
+	double normB = 0;
+	for (int i=0; i < B.n_rows; i++)
+	{
+		for (int j=0; j< B.n_rows; j++)
+			normB += pow(B(i,j),2);
+	}
+	normB = sqrt(normB);
+	// Then we normalize
+	for (int i=0; i < B.n_rows; i++)
+	{
+		for (int j=0; j< B.n_rows; j++)
+			B(i,j) /=normB;
+	}
+	// And check if the new norm is 1.
+	double finalNorm = 0;
+	for (int i=0; i < B.n_rows; i++)
+	{
+		for (int j=0; j< B.n_rows; j++)
+			finalNorm += pow(B(i,j),2);
+	}
+	finalNorm = sqrt(finalNorm); // Just to be able to check if everything is well done
 	return;
 }

@@ -13,11 +13,11 @@ void armaTest();
 int _tmain(int argc, _TCHAR* argv[])
 {
 	// Program flow control flags (set at compile time)
-	const bool INCLUDE_JACOBI = false; // ex. b)
+	const bool INCLUDE_JACOBI = true; // ex. b)
 	const bool INCLUDE_ARMADILLO = false; // ex. b)
 	const bool INCLUDE_TIMERS = true; // ex. b)
 	const bool MAKE_PLOTS = true; // ex. d)
-	const bool INCLUDE_LIB = true; // ex b)
+	const bool INCLUDE_LIB = false; // ex b)
 
 	//armaTest(); // debug
 
@@ -26,12 +26,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	// We create a set of equations
 	for( int i = 0; i < NUMBER_OF_EQUATIONS; i++ )
 	{
-		double omega = 5;
+		double omega = 5.00;
 		double rhoMax = 1000;
 		int nSteps = 30;
 
 		// We declare new instances for our whole set of equations
-		eqs[i] = new SchEquation(omega, rhoMax, nSteps, false);
+		eqs[i] = new SchEquation(omega, rhoMax, nSteps, true);
 	}
 	
 	if( INCLUDE_JACOBI )

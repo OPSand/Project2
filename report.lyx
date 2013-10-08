@@ -329,19 +329,30 @@ Timing of our Algorithm
 \end_layout
 
 \begin_layout Standard
-So we compared the result of our algorithm with the tqli algorithm, found
- in the lib.cpp file.
+So we had to compare the result of our algorithm with the tqli algorithm,
+ found in the lib.cpp file.
  This algorithm is based on the Householder's algorithm, which is, as we
  saw it in the lecture, more efficient than the Jacobi's algorithm, doing
  a reflexion instead of a rotation.
  Furthermore, the Householder's algorithm is designed for tridiagonal matrices,
  which is not the case of our algorithm, designed to be used even for the
  most general cases.
+ 
 \end_layout
 
 \begin_layout Standard
-// tqli nécessite trop d'itérations...
- Reste à trouver pourquoi.
+Adding the lib.cpp file in our project was quite difficult, and in the end,
+ the tqli function ran, but always returned a 
+\begin_inset Quotes eld
+\end_inset
+
+Too many iterations
+\begin_inset Quotes erd
+\end_inset
+
+ message.
+ Thus, we can only predict that this algorithm would have been more efficient
+ and faster than our.
 \end_layout
 
 \begin_layout Subsection
@@ -429,6 +440,38 @@ we take, the more amortized the amplitude of the result is.
 \end_layout
 
 \begin_layout Standard
+Without interaction between the two electrons, we only added their two wave
+ functions.
+ But now, we have a wave function dedicated to two electrons.
+ Thus, by changing 
+\begin_inset Formula $\omega_{r}$
+\end_inset
+
+, we change the Coulomb force.
+ And when 
+\begin_inset Formula $\omega_{r}$
+\end_inset
+
+ becomes big, we see that we are getting closer from the 
+\begin_inset Quotes eld
+\end_inset
+
+without interaction
+\begin_inset Quotes erd
+\end_inset
+
+ case, which can be explained because term in 
+\begin_inset Formula $\rho^{2}$
+\end_inset
+
+gain importance compared to the term in 
+\begin_inset Formula $\frac{1}{\rho^{2}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement H
 wide false
@@ -467,7 +510,7 @@ For
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \noindent
@@ -513,7 +556,7 @@ Plotting and explanations !
 \begin_layout Standard
 So we implemented algorithms for both the non-interaction and the interaction
  cases.
- 
+ After normalizing our eigenvectors, this is what we got.
 \end_layout
 
 \begin_layout Standard
@@ -527,7 +570,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename Screens/First try.png
+	filename Screens/wave_function_without_1000.png
 	scale 60
 
 \end_inset
@@ -536,7 +579,7 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Plot without Coulomb's interaction
+Wave function without Coulomb's interaction
 \end_layout
 
 \end_inset
@@ -547,6 +590,56 @@ Plot without Coulomb's interaction
 \end_inset
 
 
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Screens/wave_function_with_1000.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Wave function with Coulomb Interaction for 
+\begin_inset Formula $\omega=0.01$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We saw that the wave function was more or less amortized according to the
+ value given to 
+\begin_inset Formula $\omega_{r}$
+\end_inset
+
+, and the bigger 
+\begin_inset Formula $\omega_{r}$
+\end_inset
+
+ was, the closer we were from the case without interaction.
 \end_layout
 
 \begin_layout Section
@@ -606,7 +699,15 @@ From this project, we have learned the following things:
 \end_layout
 
 \begin_layout Itemize
-x
+writing an algorithm for the general case is a bit of an overkill when the
+ problem can be seen as a special case.
+ But writing our own algorithm for this special case is not always needed.
+ Here, many algorithms already written were pretty convenient
+\end_layout
+
+\begin_layout Itemize
+using classes allows to be more organized, and more structured in the writing
+ of the code.
 \end_layout
 
 \begin_layout Subsection

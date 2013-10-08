@@ -31,7 +31,7 @@ void Solver::SolveAll()
 	{
 		// N: This is not working, since we're not wirking with table anymore !
 		Solve(*_equations[i]); // abstract function to be defined in subclasses
-		//this->getResultMat(); // XXX : This is what we should print ?
+		this->getResultMat(); // XXX : This is what we should print ?
 #pragma region Printing Routine
 			// debug
 			rowvec rv = randu<rowvec>(_equations[i]->nSteps());
@@ -41,6 +41,8 @@ void Solver::SolveAll()
 				mat result = this->getAMat(); // Then we get rv and the result
 				_equations[i]->SetSolutions(rv,result); 
 				_equations[i]->SaveSolutions("test" + sstream.str()+ ".txt"); // XXX : remettre en places
+				_equations[i]->SetSolutions(rv,getResultMat());
+				_equations[i]->SaveSolutions("result" + sstream.str()+ ".txt");
 #pragma endregion
 	}
 }
